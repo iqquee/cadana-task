@@ -1,0 +1,34 @@
+[
+    {
+        "ID":"1",
+        "Currency": "USD" 
+    },
+    {
+        "ID":"2",
+        "Currency": "EUR"
+    },
+    {
+        "ID":"3",
+        "Currency": "AUD" 
+    },
+    {
+        "ID":"4",
+        "Currency": "RUB" 
+    },
+    {
+        "ID":"5",
+        "Currency": "QAR" 
+    },
+    {
+        "ID":"6",
+        "Currency": "PLN" 
+    },
+    {
+        "ID":"7",
+        "Currency": "GBP" 
+    },
+    {
+        "ID":"8",
+        "Currency": "NGN" 
+    }
+]
