@@ -10,5 +10,3 @@ var (
 	// ErrExchangeRateEmpty is the error for an empty exchange rate value
 	ErrExchangeRateEmpty = errors.New("exchange rate value is empty")
 )
-
-// h
