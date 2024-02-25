@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -14,7 +15,9 @@ var (
 	// errorDecodingJsonFile is the string value for error decoding json file
 	errorDecodingJsonFile = "error decoding JSON file"
 	// currencyTypesFileDir is the file location to the currency json file
-	currencyTypesFileDir = "./pkg/currency/currency.json"
+	currencyTypesFileDir = "pkg/currency/currency.json"
+	// errorGettingWorkingDir is the string value for error getting current directory
+	errorGettingWorkingDir = "error getting current directory"
 )
 
 type (
@@ -54,7 +57,22 @@ func (ex ExchangeRate) Validate() (*ExchangeRate, error) {
 // ValidateCurrencyTypes() validates the currency types from the ExchangeRate request object
 func (ex ExchangeRate) ValidateCurrencyTypes(value []string) error {
 	var currencyTypes []currencyType
-	file, err := os.Open(currencyTypesFileDir)
+	currentDir, err := os.Getwd()
+	if err != nil {
+		return helper.CustomError(fmt.Sprintf("%s ::: error message: %v", errorGettingWorkingDir, err))
+	}
+
+	var projectDir string
+	for {
+		if filepath.Base(currentDir) == "cadana-task" {
+			projectDir = currentDir
+			break
+		}
+		currentDir = filepath.Dir(currentDir)
+	}
+
+	filePath := filepath.Join(projectDir, currencyTypesFileDir)
+	file, err := os.Open(filePath)
 	if err != nil {
 		return helper.CustomError(fmt.Sprintf("%s ::: error message: %v", errorOpeningCurrencyTypeFile, err))
 	}
@@ -66,10 +84,38 @@ func (ex ExchangeRate) ValidateCurrencyTypes(value []string) error {
 		return helper.CustomError(fmt.Sprintf("%s ::: error message: %s", errorDecodingJsonFile, err))
 	}
 
-	for _, currencyType := range currencyTypes {
-		if strings.ToUpper(value[0]) != currencyType.Currency || strings.ToUpper(value[1]) != currencyType.Currency {
-			return helper.ErrInvalidCurrency
+	channelErrNil := make(chan bool)
+	done := make(chan bool)
+
+	go func() {
+		for _, currencyType := range currencyTypes {
+			if strings.ToUpper(value[0]) == currencyType.Currency {
+				channelErrNil <- true
+			}
+
+			if strings.ToUpper(value[1]) == currencyType.Currency {
+				channelErrNil <- true
+			}
 		}
+
+		done <- true
+	}()
+
+	var currencyErr bool
+	go func() {
+		for {
+			select {
+			case err := <-channelErrNil:
+				currencyErr = err
+			case <-done:
+				return
+			}
+		}
+	}()
+	<-done
+
+	if !currencyErr {
+		return helper.ErrInvalidCurrency
 	}
 
 	return nil
