@@ -40,7 +40,7 @@ func New(r *gin.RouterGroup, l zerolog.Logger, env *environment.Env, c controlle
 //	@Tags			exchange
 //	@Accept			json
 //	@Produce		json
-//	@Param			signupRequest			body	signupRequest			true	"signup request body"
+//	@Param			ExchangeRateRequest			body	model.ExchangeRateReq			true	"exchange rate request"
 //	@Success		200
 //	@Router			/exchange/rates [post]
 func (ex *exchangeHandler) rates() gin.HandlerFunc {

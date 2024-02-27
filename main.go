@@ -32,7 +32,7 @@ import (
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host						reback-be.onrender.com
+//	@host						https://currency-exchange-g8p8.onrender.com
 //	@BasePath					/api/v1
 //	@schemes					https
 //	@query.collection.format	multi
