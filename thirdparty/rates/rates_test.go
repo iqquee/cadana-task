@@ -1,14 +1,15 @@
 package rates
 
 import (
+	"cadana/model"
 	"cadana/pkg/helper"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-// TestServerA tests the ServerA function
-func TestServerA(t *testing.T) {
+// TestCurrencyServerA tests the CurrencyServerA function
+func TestCurrencyServerA(t *testing.T) {
 	var rates Rates
 
 	testCases := []struct {
@@ -39,16 +40,16 @@ func TestServerA(t *testing.T) {
 		},
 	}
 
-	validResonse := &ExchangeRateServerResponse{}
+	validResonse := &model.ExchangeRateServerResponse{}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.name, func(t *testing.T) {
 			if testCase.name != "valid values" {
-				_, err := rates.ServerA(testCase.from, testCase.to)
+				_, err := rates.CurrencyServerA(testCase.from, testCase.to)
 				assert.Error(t, err)
 				assert.Equal(t, testCase.expectedError, err)
 			} else {
-				response, err := rates.ServerA(testCase.from, testCase.to)
+				response, err := rates.CurrencyServerA(testCase.from, testCase.to)
 				assert.NoError(t, err)
 				assert.Equal(t, testCase.expectedError, err)
 
@@ -62,8 +63,8 @@ func TestServerA(t *testing.T) {
 
 }
 
-// TestServerB tests the ServerB function
-func TestServerB(t *testing.T) {
+// TestCurrencyServerB tests the CurrencyServerB function
+func TestCurrencyServerB(t *testing.T) {
 	var rates Rates
 
 	testCases := []struct {
@@ -94,16 +95,16 @@ func TestServerB(t *testing.T) {
 		},
 	}
 
-	validResonse := &ExchangeRateServerResponse{}
+	validResonse := &model.ExchangeRateServerResponse{}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.name, func(t *testing.T) {
 			if testCase.name != "valid values" {
-				_, err := rates.ServerB(testCase.from, testCase.to)
+				_, err := rates.CurrencyServerB(testCase.from, testCase.to)
 				assert.Error(t, err)
 				assert.Equal(t, testCase.expectedError, err)
 			} else {
-				response, err := rates.ServerB(testCase.from, testCase.to)
+				response, err := rates.CurrencyServerB(testCase.from, testCase.to)
 				assert.NoError(t, err)
 				assert.Equal(t, testCase.expectedError, err)
 

@@ -10,14 +10,12 @@ import (
 )
 
 var (
-	// errorOpeningCurrencyTypeFile is the string value for error opening currency json file
-	errorOpeningCurrencyTypeFile = "error opening JSON file"
-	// errorDecodingJsonFile is the string value for error decoding json file
-	errorDecodingJsonFile = "error decoding JSON file"
-	// currencyTypesFileDir is the file location to the currency json file
-	currencyTypesFileDir = "pkg/currency/currency.json"
+	// errorUnmarshalingJsonFile is the string value for error unmarshaling json file
+	errorUnmarshalingJsonFile = "error unmarshal JSON file"
 	// errorGettingWorkingDir is the string value for error getting current directory
 	errorGettingWorkingDir = "error getting current directory"
+	// errorReadingJson is the string value for error rading json file
+	errorReadingJson = "error reading JSON file"
 )
 
 type (
@@ -38,15 +36,25 @@ type (
 		ID       string `json:"ID"`
 		Currency string `json:"Currency"`
 	}
+
+	// ExchangeRateServerResponse is response object from the server for an exchange rate
+	ExchangeRateServerResponse struct {
+		From  string  `json:"from"`
+		To    string  `json:"to"`
+		Rate  float64 `json:"rate"`
+		Error error   `json:"error"`
+	}
 )
 
 // Validate() validates the ExchangeRate object request
-func (ex ExchangeRateReq) Validate() (*ExchangeRateReq, error) {
+func (ex ExchangeRateReq) Validate() ([]string, error) {
+	fmt.Println("Validation started...")
 	// check if the CurrencyPair value is not empty
 	if len(ex.CurrencyPair) == 0 {
 		return nil, helper.ErrExchangeRateEmpty
 	}
 
+	var currencyTypes []string
 	// check if the CurrencyPair value is in this format e.g USD-EUR
 	if !strings.Contains(ex.CurrencyPair, "-") || strings.Contains(ex.CurrencyPair, " ") {
 		return nil, helper.ErrInvalidCurrency
@@ -56,40 +64,32 @@ func (ex ExchangeRateReq) Validate() (*ExchangeRateReq, error) {
 		if err := ex.ValidateCurrencyTypes(currencyTypeValues); err != nil {
 			return nil, err
 		}
+
+		currencyTypes = currencyTypeValues
 	}
 
-	return &ex, nil
+	return currencyTypes, nil
 }
 
 // ValidateCurrencyTypes() validates the currency types from the ExchangeRate request object
 func (ex ExchangeRateReq) ValidateCurrencyTypes(value []string) error {
 	var currencyTypes []currencyType
+
 	currentDir, err := os.Getwd()
 	if err != nil {
 		return helper.CustomError(fmt.Sprintf("%s ::: error message: %v", errorGettingWorkingDir, err))
 	}
 
-	var projectDir string
-	for {
-		if filepath.Base(currentDir) == "cadana-task" {
-			projectDir = currentDir
-			break
-		}
+	filePath := filepath.Join(currentDir, "/model/currency.json")
 
-		currentDir = filepath.Dir(currentDir)
-	}
-
-	filePath := filepath.Join(projectDir, currencyTypesFileDir)
-	file, err := os.Open(filePath)
+	jsonData, err := os.ReadFile(filePath)
 	if err != nil {
-		return helper.CustomError(fmt.Sprintf("%s ::: error message: %v", errorOpeningCurrencyTypeFile, err))
+		return helper.CustomError(fmt.Sprintf("%s ::: error message: %v", errorReadingJson, err))
 	}
 
-	defer file.Close()
-
-	decoder := json.NewDecoder(file)
-	if err := decoder.Decode(&currencyTypes); err != nil {
-		return helper.CustomError(fmt.Sprintf("%s ::: error message: %s", errorDecodingJsonFile, err))
+	err = json.Unmarshal(jsonData, &currencyTypes)
+	if err != nil {
+		return helper.CustomError(fmt.Sprintf("%s ::: error message: %v", errorUnmarshalingJsonFile, err))
 	}
 
 	channelErrNil := make(chan bool)

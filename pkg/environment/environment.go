@@ -19,21 +19,20 @@ type Env struct {
 	isFromCloud          bool
 	envCache             map[string]string
 	attemptPullFromCloud bool
-	Region               string
 	logger               zerolog.Logger
 }
 
 // New creates a new instance of Env and returns an error if any occurs
-func New(z zerolog.Logger, region string) (*Env, error) {
-	l := z.With().Str(helper.LogStrKeyLevel, packageName).Logger()
+func New(z zerolog.Logger) (*Env, error) {
+	l := z.With().Str(helper.LogStrPartnerLevel, packageName).Logger()
 
-	err := godotenv.Load()
-	if err != nil {
+	if err := godotenv.Load(); err != nil {
+		l.Error().Msgf("godotenv error ::: %v", err)
 		return nil, err
 	}
+
 	ev := &Env{
 		attemptPullFromCloud: false, // pull from cloud again once if value retrieved is blank at anytime
-		Region:               region,
 		logger:               l,
 	}
 
@@ -47,10 +46,10 @@ func New(z zerolog.Logger, region string) (*Env, error) {
 
 // NewLoadFromFile lets you load Env object from a file
 func NewLoadFromFile(fileName string) (*Env, error) {
-	err := godotenv.Load(fileName)
-	if err != nil {
+	if err := godotenv.Load(fileName); err != nil {
 		return nil, err
 	}
+
 	return &Env{}, nil
 }
 
@@ -64,7 +63,7 @@ func (e *Env) Get(key string) string {
 		if found, ok := e.envCache[key]; ok {
 			printMsg = fmt.Sprintf("value read from AWS cloud has length [%d]", len(found))
 			e.logger.Info().Msgf("Get :::  %s", printMsg)
-			if len(found) == 0 && !e.attemptPullFromCloud && !e.IsUnitTest() {
+			if len(found) == 0 && !e.attemptPullFromCloud {
 				// don't give up, let's re-pull as the length is empty and we never re-pulled before
 				e.attemptPullFromCloud = true
 				e.fetchFromUpstream()
@@ -78,10 +77,13 @@ func (e *Env) Get(key string) string {
 	return os.Getenv(key)
 }
 
-// IsUnitTest is helper that returns true or false if the environment is executed in unit test
-func (e *Env) IsUnitTest() bool {
-	v := e.Get("IS_UNIT_TEST")
-	return strings.EqualFold(v, "true")
+// MockGet mocks retrieving the string value of an environmental variable
+func (e *Env) MockGet(key string) string {
+	if len(key) == 0 {
+		return ""
+	}
+
+	return e.envCache[key]
 }
 
 // MockEnv designed for mocking env

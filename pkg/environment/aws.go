@@ -13,7 +13,7 @@ import (
 // fetchFromUpstream retrieves the API key for a given service from AWS Secret Manager
 func (e *Env) fetchFromUpstream() {
 	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(e.Region),
+		Region: aws.String(e.MockGet("AWS_REGION")),
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -73,7 +73,7 @@ func (e *Env) fetchFromUpstream() {
 // CreateNewSecret creates a new secrete on AWS Secret Manager
 func (e *Env) CreateNewSecret(secretName, secretValue string) (string, error) {
 	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(e.Region),
+		Region: aws.String(e.MockGet("AWS_REGION")),
 	})
 	if err != nil {
 		return "", err
@@ -94,13 +94,13 @@ func (e *Env) CreateNewSecret(secretName, secretValue string) (string, error) {
 	return *result.Name, nil
 }
 
-// GetSecret retrieves a mock secret key for testing
-func (Env) GetSecret(secretName string) (string, error) {
+// MockGetSecret retrieves a mock secret key for testing
+func (Env) MockGetSecret(secretName string) (string, error) {
 	// Simulation for fetching the API key from AWS
 	time.Sleep(time.Millisecond * 100)
 
 	if len(secretName) == 0 {
-		return "", helper.CustomError("secret name not found")
+		return "", helper.CustomError("secret not found")
 	}
 
 	return "apiKeyResponse", nil

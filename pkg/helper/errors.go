@@ -18,6 +18,8 @@ var (
 	ErrExchangeRateEmpty = errors.New("exchange rate value is empty")
 	// ErrConvertCurrencyValueMissing is the error for empty currency(s) params
 	ErrConvertCurrencyValueMissing = errors.New("you must pass currencies values to convert")
+	// ErrBothServicesResponse is the error when both services returned an error
+	ErrBothServicesResponse = errors.New("both services returned errors")
 )
 
 // ExchangeRateResponse represents the JSON response structure

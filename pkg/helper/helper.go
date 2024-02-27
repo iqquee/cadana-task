@@ -4,8 +4,11 @@ import (
 	"errors"
 )
 
-var (
-	LogStrKeyLevel = "cadana"
+const (
+	// LogStrKeyModule log service name value
+	LogStrKeyModule = "ser_name"
+	// LogStrPartnerLevel log partner name value
+	LogStrPartnerLevel = "partner_name"
 )
 
 // CustomError() is used return custom errors
@@ -25,4 +28,9 @@ func GetStringPointerValue(str *string) string {
 	}
 
 	return val
+}
+
+// GetStringPointer returns a string pointer
+func GetStringPointer(val string) *string {
+	return &val
 }
