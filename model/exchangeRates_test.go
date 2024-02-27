@@ -9,7 +9,7 @@ import (
 
 // TestValidateCurrencyTypes() tests the ValidateCurrencyTypes method
 func TestValidateCurrencyTypes(t *testing.T) {
-	ex := ExchangeRate{}
+	ex := ExchangeRateReq{}
 
 	// Test case 1 -  Valid currency type
 	value1 := []string{"USD", "EUR"}

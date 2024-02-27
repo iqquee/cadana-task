@@ -4,6 +4,10 @@ import (
 	"errors"
 )
 
+var (
+	LogStrKeyLevel = "cadana"
+)
+
 // CustomError() is used return custom errors
 func CustomError(value string) error {
 	if len(value) == 0 {

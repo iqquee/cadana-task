@@ -21,9 +21,16 @@ var (
 )
 
 type (
-	// ExchangeRate is request object for an exchange rate
-	ExchangeRate struct {
+	// ExchangeRateReq is request object for an exchange rate
+	ExchangeRateReq struct {
 		CurrencyPair string `json:"currency-pair"`
+	}
+
+	// ExchangeRateRes is response object for an exchange rate
+	ExchangeRateRes struct {
+		From string  `json:"from"`
+		To   string  `json:"to"`
+		Rate float64 `json:"rate"`
 	}
 
 	// currencyType is an object for the currency types
@@ -34,7 +41,7 @@ type (
 )
 
 // Validate() validates the ExchangeRate object request
-func (ex ExchangeRate) Validate() (*ExchangeRate, error) {
+func (ex ExchangeRateReq) Validate() (*ExchangeRateReq, error) {
 	// check if the CurrencyPair value is not empty
 	if len(ex.CurrencyPair) == 0 {
 		return nil, helper.ErrExchangeRateEmpty
@@ -55,7 +62,7 @@ func (ex ExchangeRate) Validate() (*ExchangeRate, error) {
 }
 
 // ValidateCurrencyTypes() validates the currency types from the ExchangeRate request object
-func (ex ExchangeRate) ValidateCurrencyTypes(value []string) error {
+func (ex ExchangeRateReq) ValidateCurrencyTypes(value []string) error {
 	var currencyTypes []currencyType
 	currentDir, err := os.Getwd()
 	if err != nil {
@@ -68,6 +75,7 @@ func (ex ExchangeRate) ValidateCurrencyTypes(value []string) error {
 			projectDir = currentDir
 			break
 		}
+
 		currentDir = filepath.Dir(currentDir)
 	}
 
