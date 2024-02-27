@@ -5,6 +5,7 @@ import (
 	"github.com/rs/zerolog"
 
 	"cadana/controller"
+	"cadana/handler/docs"
 	exchangerates "cadana/handler/exchangeRates"
 	"cadana/pkg/environment"
 	"cadana/pkg/helper"
@@ -37,6 +38,8 @@ func New(z zerolog.Logger, ev *environment.Env, engine *gin.Engine, a *controlle
 // Build setups the APi endpoints
 func (h *Handler) Build() {
 	v1 := h.api.Group("/v1")
-	//register the kyc endpoints
+	// register the exchange rates endpoints
 	exchangerates.New(v1, *h.logger, h.env, *h.application)
+	// register the docs endpoint
+	docs.New(v1)
 }
