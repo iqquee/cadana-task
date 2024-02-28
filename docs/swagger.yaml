@@ -5,7 +5,7 @@ definitions:
       currency-pair:
         type: string
     type: object
-host: https://currency-exchange-g8p8.onrender.com
+host: currency-exchange-g8p8.onrender.com
 info:
   contact:
     email: support@swagger.io
