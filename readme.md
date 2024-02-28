@@ -2,7 +2,7 @@
 
 ### Things to know inother to get started with this project.
 
-#### Ensure you have the [Go](https://golang.org) compiler installed.
+#### Ensure you have the [Go](https://go.dev/doc/install) compiler installed.
 
 - This task can be tested both locally or using the docs page on the live [url](https://currency-exchange-g8p8.onrender.com/api/v1/docs/index.html) with which [swagger](github.com/swaggo/gin-swagger) was used for it's documentation, it also provides an environment to test API endpoint(s) live.
 
