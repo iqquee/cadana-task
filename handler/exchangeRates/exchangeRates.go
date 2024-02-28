@@ -33,7 +33,7 @@ func New(r *gin.RouterGroup, l zerolog.Logger, env *environment.Env, c controlle
 
 }
 
-// signup 	godoc
+// exchange rates 	godoc
 //
 //	@Summary		exchange rates
 //	@Description	this endpoint gets an exchange rate
@@ -68,7 +68,10 @@ func (ex *exchangeHandler) rates() gin.HandlerFunc {
 			return
 		}
 
-		restModel.OkResponse(c, http.StatusOK, "successful currency conversion rate", response)
+		var responseMap = make(map[string]interface{})
+		responseMap[request.CurrencyPair] = response.Rate
+
+		restModel.OkResponse(c, http.StatusOK, "successful currency conversion rate", responseMap)
 	}
 
 }

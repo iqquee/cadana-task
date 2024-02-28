@@ -80,7 +80,7 @@ func (ex ExchangeRateReq) ValidateCurrencyTypes(value []string) error {
 		return helper.CustomError(fmt.Sprintf("%s ::: error message: %v", errorGettingWorkingDir, err))
 	}
 
-	filePath := filepath.Join(currentDir, "/model/currency.json")
+	filePath := filepath.Join(currentDir, "/pkg/currency/currency.json")
 
 	jsonData, err := os.ReadFile(filePath)
 	if err != nil {
