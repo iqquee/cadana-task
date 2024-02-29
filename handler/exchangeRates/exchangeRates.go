@@ -71,7 +71,7 @@ func (ex *exchangeHandler) rates() gin.HandlerFunc {
 		var responseMap = make(map[string]interface{})
 		responseMap[request.CurrencyPair] = response.Rate
 
-		restModel.OkResponse(c, http.StatusOK, "successful currency conversion rate", responseMap)
+		restModel.OkResponse(c, http.StatusOK, "successful", responseMap)
 	}
 
 }

@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "name": "doe",
+        "salary": {
+            "balance": 100,
+            "currency": "USD" 
+        }
+    },
+    {
+        "id": 2,
+        "name": "elton",
+        "salary": {
+            "balance": 50,
+            "currency": "GBP" 
+        }
+    },
+    {
+        "id": 3,
+        "name": "marry",
+        "salary": {
+            "balance": 100,
+            "currency": "USD" 
+        }
+    },
+    {
+        "id": 4,
+        "name": "john",
+        "salary": {
+            "balance": 100,
+            "currency": "USD" 
+        }
+    },
+    {
+        "id": 5,
+        "name": "aisha",
+        "salary": {
+            "balance": 120,
+            "currency": "GBP" 
+        }
+    },
+    {
+        "id": 6,
+        "name": "farida",
+        "salary": {
+            "balance": 70,
+            "currency": "EUR" 
+        }
+    },
+    {
+        "id": 7,
+        "name": "samuel",
+        "salary": {
+            "balance": 45,
+            "currency": "GBP"
+        }
+    },
+    {
+        "id": 8,
+        "name": "mariam",
+        "salary": {
+            "balance": 78,
+            "currency": "USD"
+        }
+    },
+    {
+        "id": 9,
+        "name": "amed",
+        "salary": {
+            "balance": 31,
+            "currency": "EUR"
+        }
+    },
+    {
+        "id": 10,
+        "name": "praise",
+        "salary": {
+            "balance": 120,
+            "currency": "EUR"
+        }
+    }
+]

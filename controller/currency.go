@@ -3,21 +3,24 @@ package controller
 import (
 	"cadana/model"
 	"cadana/pkg/helper"
-	"fmt"
 )
 
+// CurrencyServerA is a mock server response
 func (c *Controller) CurrencyServerA(from, to string) (*model.ExchangeRateServerResponse, error) {
-	fmt.Println("Server A started...")
+	c.logger.Info().Msg("Currency Server A started...")
 	return c.ratesService.CurrencyServerA(from, to)
 }
 
+// CurrencyServerB is a mock server response
 func (c *Controller) CurrencyServerB(from, to string) (*model.ExchangeRateServerResponse, error) {
-	fmt.Println("Server B started...")
+	c.logger.Info().Msg("Currency Server B started...")
 	return c.ratesService.CurrencyServerB(from, to)
 }
 
+// ServerResponse makes a concurrent request to both of the mock server: Controller.CurrencyServerA() and Controller.CurrencyServerB() and returns a response of model.ExchangeRateServerResponse{} pointer
 func (c *Controller) ServerResponse(from, to string) (*model.ExchangeRateServerResponse, error) {
-	fmt.Println("Server Response started...")
+	c.logger.Info().Msg("Server Response started...")
+
 	responseChan := make(chan *model.ExchangeRateServerResponse, 2)
 
 	go func() {

@@ -7,7 +7,12 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/rs/zerolog/log"
 )
+
+// ExchangeRateJSONFileLocation is the file location to the currency.json file
+const ExchangeRateJSONFileLocation = "/pkg/currency/currency.json"
 
 var (
 	// errorUnmarshalingJsonFile is the string value for error unmarshaling json file
@@ -48,7 +53,7 @@ type (
 
 // Validate() validates the ExchangeRate object request
 func (ex ExchangeRateReq) Validate() ([]string, error) {
-	fmt.Println("Validation started...")
+	log.Info().Msg("Validation started...")
 	// check if the CurrencyPair value is not empty
 	if len(ex.CurrencyPair) == 0 {
 		return nil, helper.ErrExchangeRateEmpty
@@ -80,7 +85,7 @@ func (ex ExchangeRateReq) ValidateCurrencyTypes(value []string) error {
 		return helper.CustomError(fmt.Sprintf("%s ::: error message: %v", errorGettingWorkingDir, err))
 	}
 
-	filePath := filepath.Join(currentDir, "/pkg/currency/currency.json")
+	filePath := filepath.Join(currentDir, ExchangeRateJSONFileLocation)
 
 	jsonData, err := os.ReadFile(filePath)
 	if err != nil {
@@ -94,33 +99,43 @@ func (ex ExchangeRateReq) ValidateCurrencyTypes(value []string) error {
 
 	channelErrNil := make(chan bool)
 	done := make(chan bool)
+	var currencyErr bool
 
-	go func() {
+	if len(value) == 2 {
+		go func() {
+			for _, currencyType := range currencyTypes {
+				if strings.ToUpper(value[0]) == currencyType.Currency {
+					channelErrNil <- true
+				}
+
+				if strings.ToUpper(value[1]) == currencyType.Currency {
+					channelErrNil <- true
+				}
+
+			}
+
+			done <- true
+		}()
+
+		go func() {
+			for {
+				select {
+				case err := <-channelErrNil:
+					currencyErr = err
+				case <-done:
+					return
+				}
+			}
+		}()
+		<-done
+
+	} else {
 		for _, currencyType := range currencyTypes {
 			if strings.ToUpper(value[0]) == currencyType.Currency {
-				channelErrNil <- true
-			}
-
-			if strings.ToUpper(value[1]) == currencyType.Currency {
-				channelErrNil <- true
+				return nil
 			}
 		}
-
-		done <- true
-	}()
-
-	var currencyErr bool
-	go func() {
-		for {
-			select {
-			case err := <-channelErrNil:
-				currencyErr = err
-			case <-done:
-				return
-			}
-		}
-	}()
-	<-done
+	}
 
 	if !currencyErr {
 		return helper.ErrInvalidCurrency

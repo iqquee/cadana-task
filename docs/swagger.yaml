@@ -39,6 +39,33 @@ paths:
       summary: exchange rates
       tags:
       - exchange
+  /persons/filter/currency/:currency:
+    get:
+      consumes:
+      - application/json
+      description: this endpoint converts currencies that are not in USD to USD with
+        the balance converted
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: filterByCurrency
+      tags:
+      - person
+  /persons/filter/currency/group:
+    get:
+      consumes:
+      - application/json
+      description: this endpoint groups persons by currency
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: groupByCurrency
+      tags:
+      - person
 schemes:
 - https
 securityDefinitions:

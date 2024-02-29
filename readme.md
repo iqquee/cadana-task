@@ -75,7 +75,7 @@
     }
 ]
 ```
-- A `go routine` was wraped around the `for` loop in the`ExchangeRateReq{}.validate()` method to validate both currencies against the `currency.json file` concurrently inother to speed up the response process.
-- A `go routine` was also used in `Controller{}.ServerResponse()` in the `controller package` to make concurrent request to the CurrencyServerA() and CurrencyServerB() which are our mock server. 
+- A `go routine` was wraped around the `for` loop in the`ExchangeRateReq{}.validate()` method to validate both currencies against the `currency.json file` concurrently in other to speed up the response process.
+- A `go routine` was also used in `Controller{}.ServerResponse()` in the `controller package` to make concurrent request to the CurrencyServerA() and CurrencyServerB() which are the mock servers.
 - - The `go routine` makes a request to both servers concurrently and returns a response from the first server to respond with a success. 
 - - If eventually the first server encountered an error, it will wait for the second server for response and return the response if successful. But there is a case in which both servers could return errors and only in this situation will it return an error.

@@ -39,7 +39,7 @@ func New(z zerolog.Logger, ev *environment.Env) *ExchangeRateService {
 	return &ex
 }
 
-// ServerA is a mock server response
+// CurrencyServerA is a mock server response
 func (r Rates) CurrencyServerA(from, to string) (*model.ExchangeRateServerResponse, error) {
 	if len(from) == 0 || len(to) == 0 {
 		return nil, helper.ErrConvertCurrencyValueMissing
@@ -60,7 +60,7 @@ func (r Rates) CurrencyServerA(from, to string) (*model.ExchangeRateServerRespon
 	}, nil
 }
 
-// ServerB is a mock server response
+// CurrencyServerB is a mock server response
 func (r Rates) CurrencyServerB(from, to string) (*model.ExchangeRateServerResponse, error) {
 	if len(from) == 0 || len(to) == 0 {
 		return nil, helper.ErrConvertCurrencyValueMissing

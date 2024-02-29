@@ -54,6 +54,46 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/persons/filter/currency/:currency": {
+            "get": {
+                "description": "this endpoint converts currencies that are not in USD to USD with the balance converted",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "person"
+                ],
+                "summary": "filterByCurrency",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/persons/filter/currency/group": {
+            "get": {
+                "description": "this endpoint groups persons by currency",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "person"
+                ],
+                "summary": "groupByCurrency",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
         }
     },
     "definitions": {
