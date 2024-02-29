@@ -53,10 +53,10 @@ func (p Persons) FilterByCurrency(currency string, c controller.Operations) ([]P
 		CurrencyPair: currency,
 	}
 
-	var single []string
-	single = append(single, currency)
+	var currencyType []string
+	currencyType = append(currencyType, currency)
 
-	if err := currencyExObj.ValidateCurrencyTypes(single); err != nil {
+	if err := currencyExObj.ValidateCurrencyTypes(currencyType); err != nil {
 		return nil, err
 	}
 
