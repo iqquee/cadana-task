@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
+	"strings"
 
 	"cadana/controller"
 	"cadana/model"
@@ -102,4 +104,22 @@ func (p Persons) UnmarshalPersonJSON() (Persons, error) {
 	}
 
 	return persons, nil
+}
+
+// FilterFromAscToDesc filters persons salary from ascending to descending or reverse
+func (p Persons) FilterFromAscToDesc(sortDir string) (Persons, error) {
+
+	if strings.ToUpper(sortDir) == "ASC" {
+		sort.Slice(p.Data, func(i, j int) bool {
+			return p.Data[i].Salary.Balance > p.Data[j].Salary.Balance
+		})
+	} else if strings.ToUpper(sortDir) == "DESC" {
+		sort.Slice(p.Data, func(i, j int) bool {
+			return p.Data[i].Salary.Balance < p.Data[j].Salary.Balance
+		})
+	} else {
+		return Persons{}, helper.CustomError("Invalid sort direction")
+	}
+
+	return p, nil
 }

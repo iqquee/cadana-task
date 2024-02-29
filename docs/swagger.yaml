@@ -39,6 +39,20 @@ paths:
       summary: exchange rates
       tags:
       - exchange
+  /persons/currency/:sortDir:
+    get:
+      consumes:
+      - application/json
+      description: this endpoint filters persons salary from ascending to descending
+        or reverse
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: filterByCurrency
+      tags:
+      - person
   /persons/filter/currency/:currency:
     get:
       consumes:

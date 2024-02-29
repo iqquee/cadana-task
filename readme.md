@@ -85,6 +85,9 @@
 ### TASK TWO(2) - Data manipulation
 #### API endpoint 1
 - This is the API endpoint to groups persons by salary currency type into hash maps locally `127.0.0.1:5002/api/v1/persons/filter/currency/:currency`. It takes in a currency path parameter e.g `127.0.0.1:5002/api/v1/persons/filter/currency/USD`
+
+NOTE: A validation was added to the `:currency` path in the URL. It validates against the list of currencies in the `currency.json` file.
+
 - This is a `GET` request method.
 - The server response is in JSON and the response looks like this
 ```json
@@ -278,3 +281,105 @@
 }
 ```
 
+#### API endpoint 3
+- This is the API endpoint to groups persons by salary currency type into hash maps locally `127.0.0.1:5002/api/v1/persons/currency/:sortDir`. It takes in a currency path parameter e.g `127.0.0.1:5002/api/v1/persons/currency/asc`
+
+NOTE: The `:sortDir` path in the URL can either be `asc` or `desc`. `asc` sorts its in ascending order while `desc` sorts in descending order. If you provide something else aside from this, you will get an error of `invalid sort direction`
+
+- This is a `GET` request method.
+- The server response is in JSON and the response looks like this
+```json
+{
+    "code": 200,
+    "data": {
+        "data": [
+            {
+                "id": 5,
+                "name": "aisha",
+                "salary": {
+                    "balance": 120,
+                    "currency": "GBP"
+                }
+            },
+            {
+                "id": 10,
+                "name": "praise",
+                "salary": {
+                    "balance": 120,
+                    "currency": "EUR"
+                }
+            },
+            {
+                "id": 1,
+                "name": "doe",
+                "salary": {
+                    "balance": 100,
+                    "currency": "USD"
+                }
+            },
+            {
+                "id": 3,
+                "name": "marry",
+                "salary": {
+                    "balance": 100,
+                    "currency": "USD"
+                }
+            },
+            {
+                "id": 4,
+                "name": "john",
+                "salary": {
+                    "balance": 100,
+                    "currency": "USD"
+                }
+            },
+            {
+                "id": 8,
+                "name": "mariam",
+                "salary": {
+                    "balance": 78,
+                    "currency": "USD"
+                }
+            },
+            {
+                "id": 6,
+                "name": "farida",
+                "salary": {
+                    "balance": 70,
+                    "currency": "EUR"
+                }
+            },
+            {
+                "id": 2,
+                "name": "elton",
+                "salary": {
+                    "balance": 50,
+                    "currency": "GBP"
+                }
+            },
+            {
+                "id": 7,
+                "name": "samuel",
+                "salary": {
+                    "balance": 45,
+                    "currency": "GBP"
+                }
+            },
+            {
+                "id": 9,
+                "name": "amed",
+                "salary": {
+                    "balance": 31,
+                    "currency": "EUR"
+                }
+            }
+        ]
+    },
+    "message": "successful",
+    "error": null
+}
+```
+
+## 127.0.0.1:5002/api/v1/persons/currency/desc
+
+NOTE: A validation was added to the `:currency` path in the URL. It validates against the list of currencies in the `currency.json` file.

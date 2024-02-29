@@ -108,3 +108,9 @@ func main() {
 
 	applicationLogger.Info().Msgf("Server exiting")
 }
+
+// Person represents a person with a salary.
+type Person struct {
+	Name   string
+	Salary int
+}

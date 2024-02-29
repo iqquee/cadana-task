@@ -29,6 +29,7 @@ func New(r *gin.RouterGroup, l zerolog.Logger, c controller.Operations) {
 	// Endpoints exposed under persons data manipulation
 	exchangeGroup.GET("/filter/currency/group", person.groupByCurrency())
 	exchangeGroup.GET("/filter/currency/:currency", person.filterByCurrency())
+	exchangeGroup.GET("/currency/:sortDir", person.filterFromAscToDesc())
 
 }
 
@@ -91,6 +92,44 @@ func (p *personHandler) filterByCurrency() gin.HandlerFunc {
 			restModel.ErrorResponse(c, http.StatusInternalServerError, err.Error())
 			return
 		}
+		restModel.OkResponse(c, http.StatusOK, "successful", response)
+	}
+}
+
+// filterByCurrency 	godoc
+//
+//	@Summary		filterByCurrency
+//	@Description	this endpoint filters persons salary from ascending to descending or reverse
+//	@Tags			person
+//	@Accept			json
+//	@Produce		json
+//	@Success		200
+//	@Router			/persons/currency/:sortDir [get]
+func (p *personHandler) filterFromAscToDesc() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		sortDir := c.Param("sortDir")
+		if len(sortDir) == 0 {
+			p.logger.Error().Msgf("%v", helper.CustomError("sort direction is not set"))
+			restModel.ErrorResponse(c, http.StatusInternalServerError, helper.CustomError("sort direction is not set").Error())
+			return
+		}
+
+		var request person.Persons
+
+		persons, err := request.UnmarshalPersonJSON()
+		if err != nil {
+			p.logger.Error().Msgf("%v", err)
+			restModel.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		response, err := persons.FilterFromAscToDesc(sortDir)
+		if err != nil {
+			p.logger.Error().Msgf("%v", err)
+			restModel.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
 		restModel.OkResponse(c, http.StatusOK, "successful", response)
 	}
 }

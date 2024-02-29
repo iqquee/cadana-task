@@ -55,6 +55,26 @@ const docTemplate = `{
                 }
             }
         },
+        "/persons/currency/:sortDir": {
+            "get": {
+                "description": "this endpoint filters persons salary from ascending to descending or reverse",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "person"
+                ],
+                "summary": "filterByCurrency",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/persons/filter/currency/:currency": {
             "get": {
                 "description": "this endpoint converts currencies that are not in USD to USD with the balance converted",
