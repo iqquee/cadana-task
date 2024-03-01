@@ -84,7 +84,7 @@
 
 ### TASK TWO(2) - Data manipulation
 #### API endpoint 1
-- This is the API endpoint to groups persons by salary currency type into hash maps locally `127.0.0.1:5002/api/v1/persons/filter/currency/:currency`. It takes in a currency path parameter e.g `127.0.0.1:5002/api/v1/persons/filter/currency/USD`
+- This is the API endpoint to filters persons by salary currency and converts the salaries to USD locally `127.0.0.1:5002/api/v1/persons/filter/currency/:currency`. It takes in a currency path parameter e.g `127.0.0.1:5002/api/v1/persons/filter/currency/USD`
 
 NOTE: A validation was added to the `:currency` path in the URL. It validates against the list of currencies in the `currency.json` file.
 
@@ -182,7 +182,7 @@ NOTE: A validation was added to the `:currency` path in the URL. It validates ag
 
 
 #### API endpoint 2
-- This is the API endpoint to filters persons by salary currency and converts the salaries to USD locally `127.0.0.1:5002/api/v1/persons/filter/currency/group`.
+- This is the API endpoint to groups persons by salary currency type into hash maps locally `127.0.0.1:5002/api/v1/persons/filter/currency/group`.
 - This is a `GET` request method.
 - The server response is in JSON and the response looks like this
 ```json
